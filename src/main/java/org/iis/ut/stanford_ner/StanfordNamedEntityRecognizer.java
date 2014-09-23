@@ -34,8 +34,7 @@ public class StanfordNamedEntityRecognizer {
     }
 
     
-    public static List<String> NER(String Input) throws IOException {
-
+   public  static List<String> NER(String Input){
       List<String> Output = new ArrayList<String>();
       for(int i=0; i<Classifier.length ;i++){
       String Text_NER;            
@@ -45,16 +44,17 @@ public class StanfordNamedEntityRecognizer {
               continue;
           }
         Matcher m = Pattern.compile("<([A-Za-z0-9]+?)>(.*?)<(/[A-Za-z0-9]+?)>").matcher(Text_NER);
+       List<String> tmpOut = new ArrayList<String>();
         while(m.find()){
-                    Output.add(m.group(2));
+            if(!Output.contains(m.group(2)))
+                    tmpOut.add(m.group(2));
         }
-//        System.out.println(classifier.classifyWithInlineXML(Input));
-//        System.out.println(classifier.classifyToString(Input, "xml", true)); 
-//        System.out.println(classifier.classifyToString(Input));
-//        System.err.println("--------------------------");
+        Output.addAll(tmpOut);
+        
       }
       return Output;
     }
+   
     public static void main(String[] args) throws IOException {
         String input = "The fate of Lehman Brothers, the beleaguered investment bank, hung in the balance on Sunday as Federal Reserve officials and the leaders of major financial institutions continued to gather in emergency meetings trying to complete a plan to rescue the stricken bank.  Several possible plans emerged from the talks, held at the Federal Reserve Bank of New York and led by Timothy R. Geithner, the president of the New York Fed, and Treasury Secretary Henry M. Paulson Jr.";
         List<String> tmpList = NER(input); 
